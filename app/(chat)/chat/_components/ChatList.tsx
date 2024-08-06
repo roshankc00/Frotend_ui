@@ -10,12 +10,13 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import ChatlistItem from "./ChatlistItem";
 import { IChats } from "@/interfaces/chat.interface";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import CreateChat from "./CreateChat";
 
 const ChatList = () => {
   const { data, isFetching, isLoading } = useGetMineChats();
-  console.log(data);
   return (
-    <div className=" h-screen border border-gray-200">
+    <ScrollArea className=" h-screen border border-gray-200">
       <Card className=" border-none bg-gray-100">
         <CardContent>
           <CardTitle className=" font-semibold text-2xl  my-3">Chats</CardTitle>
@@ -30,9 +31,14 @@ const ChatList = () => {
               <p className="text-center text-gray-500">No chats available</p>
             )}
           </CardDescription>
+          <div className="fixed bottom-0">
+            <div className="flex justify-center items-center">
+              <CreateChat />
+            </div>
+          </div>
         </CardContent>
       </Card>
-    </div>
+    </ScrollArea>
   );
 };
 
