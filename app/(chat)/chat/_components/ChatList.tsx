@@ -12,6 +12,8 @@ import ChatlistItem from "./ChatlistItem";
 import { IChats } from "@/interfaces/chat.interface";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import CreateChat from "./CreateChat";
+import { Button } from "@/components/ui/button";
+import { LogoutUser } from "@/common/api";
 
 const ChatList = () => {
   const { data, isFetching, isLoading } = useGetMineChats();
@@ -32,7 +34,13 @@ const ChatList = () => {
             )}
           </CardDescription>
           <div className="fixed bottom-0">
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center flex-col gap-3 items-center">
+              <Button
+                className="w-[150px] 2xl:w-[200px]"
+                onClick={() => LogoutUser()}
+              >
+                Logout
+              </Button>
               <CreateChat />
             </div>
           </div>

@@ -4,6 +4,8 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import useWebSocket from "@/hooks/socket/socker-hook";
 import { useGetCurrentUser } from "@/hooks/react-query/users/get-current-user.hook";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import AddUser from "../../_components/AddUserToChat";
+import { useGetsingleChat } from "@/hooks/react-query/chats/get-single.chat";
 
 type Props = {
   chatId: string;
@@ -48,11 +50,25 @@ const MessageList: React.FC<Props> = ({ chatId }) => {
     return name.charAt(0).toUpperCase();
   };
 
+  const {
+    data: chatInfo,
+    isLoading: chatInfoLoading,
+    refetch,
+  } = useGetsingleChat(chatId);
+  useEffect(() => {
+    refetch();
+  }, []);
+
   return (
     <ScrollArea className="flex flex-col h-screen bg-gray-100 p-4">
       <Card className="flex-1 border-none bg-white shadow-lg rounded-lg flex flex-col">
         <CardContent className="flex flex-col h-full">
-          <CardTitle className="text-lg font-semibold mb-4">Chat</CardTitle>
+          <CardTitle className="w-full font-semibold mb-4 flex justify-between items-center my-5 bg-slate-200 p-3 rounded-md">
+            <span>{chatInfo?.name}</span>
+            <div>
+              <AddUser chatId={chatId} />
+            </div>
+          </CardTitle>
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 pb-24">
             {" "}
             <div className="space-y-4">

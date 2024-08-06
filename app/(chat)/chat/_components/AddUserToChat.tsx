@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { CardContent } from "@/components/ui/card";
 import { Dialog, DialogHeader } from "@/components/ui/dialog";
 import {
   DialogContent,
@@ -24,32 +23,36 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { CreateChatValidation } from "@/lib/validation/create.chat.validation";
 import { useHandleCreateChat } from "@/hooks/react-query/chats/create-chats";
+import { AddUserToChatValidation } from "@/lib/validation/addUserTOChat.validation";
+import { useHandleAddUserToChat } from "@/hooks/react-query/chats/add-user-to-chat";
+type Props = {
+  chatId: string;
+};
 
-const CreateChat = () => {
-  const { createChat, isPending } = useHandleCreateChat();
+const AddUser: React.FC<Props> = ({ chatId }) => {
+  const { addUserToChatHandler, isPending } = useHandleAddUserToChat();
   const [openCat, setOpenCat] = useState(false);
-  const form = useForm<z.infer<typeof CreateChatValidation>>({
-    resolver: zodResolver(CreateChatValidation),
+  const form = useForm<z.infer<typeof AddUserToChatValidation>>({
+    resolver: zodResolver(AddUserToChatValidation),
     defaultValues: {
       email: "",
-      name: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof CreateChatValidation>) => {
-    createChat(values);
+  const onSubmit = async (values: z.infer<typeof AddUserToChatValidation>) => {
+    await addUserToChatHandler({ ...values, chatId });
     setOpenCat(false);
   };
 
   return (
-    <div className="w-full mb-10 ">
+    <div className="w-full  ">
       <Dialog open={openCat} onOpenChange={setOpenCat}>
         <DialogTrigger className="w-full">
-          <Button className="w-[150px] 2xl:w-[200px]"> Add Chat</Button>
+          <Button className=""> Add User</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="mb-2">Create Chat</DialogTitle>
+            <DialogTitle className="mb-2">Add User</DialogTitle>
             <DialogDescription>
               <Form {...form}>
                 <form
@@ -75,23 +78,8 @@ const CreateChat = () => {
                       </>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <>
-                        <FormItem>
-                          <FormLabel>Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter Chat Name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      </>
-                    )}
-                  />
-                  <Button disabled={isPending} type="submit" className="w-full">
-                    Create Chat
+                  <Button type="submit" className="w-full">
+                    Add User
                   </Button>
                 </form>
               </Form>
@@ -103,4 +91,4 @@ const CreateChat = () => {
   );
 };
 
-export default CreateChat;
+export default AddUser;
