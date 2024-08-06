@@ -4,6 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
+import { LoginValidationSchema } from "@/lib/validation/login.validation";
+import { z } from "zod";
 
 export const useHandleLoginUser = () => {
   const router = useRouter();
@@ -16,7 +18,7 @@ export const useHandleLoginUser = () => {
     },
   });
 
-  const handleLogin = async (data: any) => {
+  const handleLogin = async (data: z.infer<typeof LoginValidationSchema>) => {
     mutateAsync(data);
   };
 

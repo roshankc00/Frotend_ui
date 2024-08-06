@@ -1,11 +1,16 @@
+import { LoginValidationSchema } from "@/lib/validation/login.validation";
 import api from "..";
+import { z } from "zod";
+import { SignUpValidationSchema } from "@/lib/validation/signup.validation";
 
-export const signupApi = async (body: any) => {
+export const signupApi = async (
+  body: z.infer<typeof SignUpValidationSchema>
+) => {
   const { data } = await api.post("/auth/signup", body);
   return data;
 };
 
-export const loginApi = async (body: any) => {
+export const loginApi = async (body: z.infer<typeof LoginValidationSchema>) => {
   const { data } = await api.post("/auth/login", body);
   return data;
 };

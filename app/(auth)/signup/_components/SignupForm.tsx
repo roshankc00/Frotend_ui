@@ -27,26 +27,13 @@ import toast from "react-hot-toast";
 import { redirect, useRouter } from "next/navigation";
 import { signupApi } from "@/common/api/user/user.api";
 import { useHandleSignupUser } from "@/hooks/react-query/users/signup.hook";
+import { SignUpValidationSchema } from "@/lib/validation/signup.validation";
 
 function SignupForm() {
   const router = useRouter();
-  const formSchema = z.object({
-    name: z.string().min(3, {
-      message: "Name must be of 3 charecter ",
-    }),
-    email: z
-      .string()
-      .min(1, {
-        message: "Email field is required",
-      })
-      .email(),
-    password: z.string().min(8, {
-      message: "Password must be of 8 charecter ",
-    }),
-  });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof SignUpValidationSchema>>({
+    resolver: zodResolver(SignUpValidationSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -54,7 +41,7 @@ function SignupForm() {
   });
 
   const { handleSignup, isPending } = useHandleSignupUser();
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof SignUpValidationSchema>) => {
     handleSignup(values);
   };
   return (

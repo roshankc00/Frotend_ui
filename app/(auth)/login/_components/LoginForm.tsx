@@ -30,20 +30,14 @@ import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import { loginApi, verifyEmailApi } from "@/common/api/user/user.api";
 import { useHandleLoginUser } from "@/hooks/react-query/users/login.hook";
+import { LoginValidationSchema } from "@/lib/validation/login.validation";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryToken = searchParams.get("token");
 
-  const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8, {
-      message: "Password must be of 8 charecter ",
-    }),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof LoginValidationSchema>>({
+    resolver: zodResolver(LoginValidationSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -52,7 +46,7 @@ function LoginForm() {
 
   const { handleLogin, isPending } = useHandleLoginUser();
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: z.infer<typeof LoginValidationSchema>) => {
     handleLogin(values);
   };
 

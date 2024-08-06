@@ -1,8 +1,10 @@
 "use client";
 import { signupApi } from "@/common/api/user/user.api";
+import { SignUpValidationSchema } from "@/lib/validation/signup.validation";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { z } from "zod";
 
 export const useHandleSignupUser = () => {
   const router = useRouter();
@@ -14,7 +16,7 @@ export const useHandleSignupUser = () => {
     },
   });
 
-  const handleSignup = async (data: any) => {
+  const handleSignup = async (data: z.infer<typeof SignUpValidationSchema>) => {
     mutateAsync(data);
   };
 
