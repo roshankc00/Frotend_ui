@@ -8,7 +8,7 @@ export const LogoutUser = () => {
 };
 
 const api = axios.create({
-  baseURL: "/",
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   headers: {
     Authorization: `Bearer ${Cookies.get("Authentication")}`,
   },
